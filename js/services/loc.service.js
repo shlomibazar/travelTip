@@ -2,6 +2,7 @@
 import { storageService } from "./storageService.js"
 
 
+
 export const locService = {
     getLocs,
     setLocs,

@@ -1,4 +1,5 @@
 import { locService } from "./loc.service.js"
+import { utilService } from "./util.Service.js"
 
 export const mapService = {
     initMap,
@@ -27,25 +28,38 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 const name = prompt('place Name ?')
                 const lat = ev.latLng.lat()
                 const lng = ev.latLng.lng()
-                console.log('lat',lat)
-                console.log('lng',lng)
-                console.log('name',name)
-                var newLoc = addLocation(name,lat,lng)
-                console.log('newLoc',newLoc)
+                const timeStamp = ev.domEvent.timeStamp
+                console.log('ev.timestamp',ev)
+                console.log('ev',ev.domEvent.timeStamp)
+                var newLoc = addLocation(name,lat,lng,timeStamp)
                 locService.setLocs(newLoc)
             })
         })
         
 }
 
-function addLocation(name,lat,lng){
+function addLocation(id=[],name,lat,lng,createdAt,updatedAt=[],weather=[]){
     return{
+        id: utilService.makeId(),
         name,
         lat,
         lng,
+        createdAt:setTime(Date.now())
     }
 }
 
+
+function setTime(createdAt){
+    var date = new Date(createdAt)
+    var myDate = date.getHours() + ":" 
+    + date.getMinutes() + ":" 
+    + date.getSeconds() + ":   "
+    + date.getDate() + "/"
+    + date.getMonth() + "/"
+    + date.getFullYear()
+    console.log('myDate',myDate)
+    return myDate
+}
 
 function addMarker(loc) {
     var marker = new google.maps.Marker({
