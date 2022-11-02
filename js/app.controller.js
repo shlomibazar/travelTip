@@ -11,6 +11,7 @@ window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
 window.onDeleteLoc = onDeleteLoc
 window.onSearch = onSearch
+window.onCopyLink = onCopyLink
 // window.addListener = addListener
 
 function onInit() {
@@ -45,25 +46,44 @@ function onGetLocs() {
         )
 }
 
-function onDeleteLoc(id){
+function onDeleteLoc(id) {
     locService.getLocs()
-    .then(locs => {
-        locService.deleteloc(locs,id)
-        renderLocs(locs)
-    })
+        .then(locs => {
+            locService.deleteloc(locs, id)
+            renderLocs(locs)
+        })
 
 }
 
-function onSearch(){
+function onSearch() {
     var userInput = document.querySelector('.search-bar').value
-    console.log('userInput',userInput)
-    const API_KEY = 'AIzaSyA7YRB2I0n5wQtwdcEfCSyFA3YrqJvZDgY'
-    const API = `https://maps.googleapis.com/maps/api/geocode/json?address=${userInput}&key=${API_KEY}`
-    console.log('API',API)
+    console.log('userInput', userInput)
+    const API_KEY = '807633838475146651756x80'
+    const API = `https://geocode.xyz/${userInput}?json=1&auth=${API_KEY}`
+    fetch(API)
+        .then(res => res.json())
+        .then(data => {
+            onPanTo(data.latt, data.longt)
+            var newLoc = mapService.addLocation(userInput, data.latt, data.longt)
+            locService.setLocs(newLoc)
+        })
 }
 // https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY
 
+function onCopyLink() {
+   return getPosition()
+        .then(data => {
+            var lat = data.coords.latitude
+            var lng = data.coords.longitude
+            console.log(lat);
+            console.log(lng);
+            const queryStringParams = `?lat=${lat}&lng=${lng}`
+            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryStringParams
+            window.history.pushState({ path: newUrl }, '', newUrl)
+            console.log(newUrl);
+        })
 
+}
 
 
 
@@ -71,16 +91,16 @@ function onGetUserPos() {
     getPosition()
         .then(pos => {
             console.log('User position is:', pos.coords)
-            onPanTo(pos.coords.latitude,pos.coords.longitude)
+            onPanTo(pos.coords.latitude, pos.coords.longitude)
             document.querySelector('.user-pos').innerText =
                 `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
-                
+
         })
         .catch(err => {
             console.log('err!!!', err)
         })
 }
-function onPanTo(lat,lng) {
+function onPanTo(lat, lng) {
     console.log('Panning the Map')
     mapService.panTo(lat, lng)
 }
@@ -90,7 +110,7 @@ function onPanTo(lat,lng) {
 
 
 function renderLocs(locs) {
-    
+
     const elUserTable = document.querySelector('.usersTable')
     elUserTable.innerHTML = `
     <tr>
@@ -113,7 +133,7 @@ function renderLocs(locs) {
         <td> <button class="btn-remove" onclick="onDeleteLoc('${loc.id}')">Delete</button></td>
         </tr>
         `
-        )
+    )
 
     // console.log('strHtmls',strHtmls)
     elUserTable.innerHTML += strHtmls.join('')

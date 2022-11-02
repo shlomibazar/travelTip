@@ -6,6 +6,7 @@ export const mapService = {
     addMarker,
     panTo,
     addListener,
+    addLocation,
     
 }
 window.addListener = addListener
@@ -80,7 +81,7 @@ function panTo(lat, lng) {
 
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
-    const API_KEY = 'AIzaSyA7YRB2I0n5wQtwdcEfCSyFA3YrqJvZDgY'
+    const API_KEY = 'AIzaSyAAO38WGARdLUQXJoshAxBGJSzTT2wIvBc'
     var elGoogleApi = document.createElement('script')
     elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`
     elGoogleApi.async = true
