@@ -30,19 +30,26 @@ function getPosition() {
     })
 }
 
+function renderMarkers(){
+    locService.getLocs()
+        .then(locs => {
+         locs.forEach(loc => onAddMarker(loc))
+        
+        })
+}
 
-
-function onAddMarker() {
+function onAddMarker({lat,lng}) {
     console.log('Adding a marker')
-    mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 })
+    mapService.addMarker({ lat, lng })
 }
 
 function onGetLocs() {
     locService.getLocs()
-        .then(locs => renderLocs(locs)
-            // console.log('Locations:', locs)
-            // document.querySelector('.locs').innerText = JSON.stringify(locs, null, 2)
-            // renderLocs()
+        .then(locs => {
+            renderLocs(locs)
+            renderMarkers()
+        }
+            
         )
 }
 
@@ -71,17 +78,19 @@ function onSearch() {
 // https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY
 
 function onCopyLink() {
-   return getPosition()
-        .then(data => {
-            var lat = data.coords.latitude
-            var lng = data.coords.longitude
-            console.log(lat);
-            console.log(lng);
-            const queryStringParams = `?lat=${lat}&lng=${lng}`
-            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryStringParams
-            window.history.pushState({ path: newUrl }, '', newUrl)
-            console.log(newUrl);
-        })
+    
+    locService.getLocs()
+        .then(locs => getLastLoc(locs))
+  
+
+}
+function getLastLoc(locs) {
+    var length = locs.length - 1
+    // locs[length]
+    const queryStringParams = `?lat=${locs[length].lat}&lng=${locs[length].lng}`
+    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryStringParams
+    window.history.pushState({ path: newUrl }, '', newUrl)
+    console.log(newUrl);
 
 }
 

@@ -34,6 +34,8 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 // console.log('ev',ev.domEvent.timeStamp)
                 var newLoc = addLocation(name,lat,lng,timeStamp)
                 locService.setLocs(newLoc)
+                
+
             })
         })
         
