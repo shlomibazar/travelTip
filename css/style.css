@@ -1,0 +1,46 @@
+
+body{
+    /* background-color: blue; */
+}
+
+button {
+    background-color: #222;
+    color: whitesmoke;
+    border:0;
+    border-radius: .2em;
+    padding: 6px 10px;
+    margin: 2px;
+    cursor: pointer;    
+}
+button:hover {
+    color: deeppink;
+}
+
+/* table {
+    width: 50px;
+    height: 20px;   
+    margin: 20px;
+    
+} */
+table, th, td {
+    border: 1px solid;
+  }
+  table {
+    counter-reset: rowNumber;
+  }
+  
+  table tr::before {
+    display: table-cell;
+    border: 1px solid;
+    counter-increment: rowNumber;
+    content: counter(rowNumber) ".";
+    padding-right: 0.3em;
+    text-align: right;
+  }
+  
+
+.cell {
+    width: 30px;
+    height: 20px;
+   
+}

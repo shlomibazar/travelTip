@@ -29,8 +29,8 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 const lat = ev.latLng.lat()
                 const lng = ev.latLng.lng()
                 const timeStamp = ev.domEvent.timeStamp
-                console.log('ev.timestamp',ev)
-                console.log('ev',ev.domEvent.timeStamp)
+                // console.log('ev.timestamp',ev)
+                // console.log('ev',ev.domEvent.timeStamp)
                 var newLoc = addLocation(name,lat,lng,timeStamp)
                 locService.setLocs(newLoc)
             })
@@ -38,7 +38,7 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
         
 }
 
-function addLocation(id=[],name,lat,lng,createdAt,updatedAt=[],weather=[]){
+function addLocation(name,lat,lng,updatedAt=[],weather=[]){
     return{
         id: utilService.makeId(),
         name,
@@ -57,7 +57,7 @@ function setTime(createdAt){
     + date.getDate() + "/"
     + date.getMonth() + "/"
     + date.getFullYear()
-    console.log('myDate',myDate)
+    // console.log('myDate',myDate)
     return myDate
 }
 
